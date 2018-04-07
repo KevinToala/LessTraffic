@@ -39,15 +39,15 @@ public class CartoService implements GeolocalizationService {
 	@Override
 	public Geolocalization insertNode(Geolocalization geolocalization){
 		String insert = String.format(
-				"insert into penetracion_final_uio_copy(the_geom) values(ST_SetSRID(ST_MakePoint('%s', '%s'), 4326))",
+				"insert into penetracion_final_uio_copy(the_geom) values(ST_SetSRID(ST_Point(%s, %s), 4326))",
 				geolocalization.getLongitude(), geolocalization.getLatitude()
 		);
 		
 		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(URL_REST_SERVICE)
 				.queryParam("q", insert)
 				.queryParam("api_key", CARTO_API_KEY);
-		
-		restTemplate.postForObject(builder.toUriString(), null, String.class);
+
+		restTemplate.postForObject(builder.build(false).toUri(), null, String.class);
 		
 		return geolocalization;
 	}
