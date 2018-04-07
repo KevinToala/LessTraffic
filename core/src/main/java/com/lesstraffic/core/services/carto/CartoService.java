@@ -47,7 +47,7 @@ public class CartoService implements GeolocalizationService {
 				.queryParam("q", insert)
 				.queryParam("api_key", CARTO_API_KEY);
 		
-		restTemplate.postForObject("https://kevin09296.carto.com/api/v2/sql?q=insert%20into%20penetracion_final_uio_copy(the_geom)%20values(ST_SetSRID(ST_MakePoint('9.12345',%20'-75.9595'),%204326))&api_key=1508f047490d65d5430853114397898064ab2794", null, String.class);
+		restTemplate.postForObject(builder.toUriString(), null, String.class);
 		
 		return geolocalization;
 	}
