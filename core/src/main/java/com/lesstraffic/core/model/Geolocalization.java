@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 public class Geolocalization {
 	private BigDecimal latitude;
 	private BigDecimal longitude;
-	
+
 	public Geolocalization(){
 	}
 	
@@ -29,6 +29,4 @@ public class Geolocalization {
 	public void setLongitude(BigDecimal longitude) {
 		this.longitude = longitude;
 	}
-
-
 }

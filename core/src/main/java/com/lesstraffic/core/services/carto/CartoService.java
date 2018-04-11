@@ -1,11 +1,15 @@
 package com.lesstraffic.core.services.carto;
 
+import java.net.URI;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -19,37 +23,34 @@ public class CartoService implements GeolocalizationService {
 	private static final String CARTO_API_KEY = "1508f047490d65d5430853114397898064ab2794";
 	
 	@Autowired
-	private RestTemplate restTemplate; 
-		
-	@Override
-	public List<Geolocalization> getNodes(){
-		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(URL_REST_SERVICE)
-				.queryParam("q", "SELECT the_geom FROM penetracion_final_uio_copy")
-				.queryParam("api_key", CARTO_API_KEY);
-	
-		String url = builder.toUriString();
-		
-		List<CartoGeometry> geometries = Arrays.asList(restTemplate.getForObject(url, CartoGeometry[].class));
-		
-		return geometries.stream()
-				.flatMap(geometry -> geometry.getCoordinates().stream())
-				.collect(Collectors.toList());
-	}
+	private RestTemplate restTemplate;
 
 	@Override
 	public Geolocalization insertNode(Geolocalization geolocalization){
 		String insert = String.format(
-				"insert into penetracion_final_uio_copy(the_geom) values(ST_SetSRID(ST_Point(%s, %s), 4326))",
-				geolocalization.getLongitude(), geolocalization.getLatitude()
+				"insert into penetracion_final_uio_copy_1(the_geom, username, insert_date)" +
+						" values(ST_SetSRID(ST_Point(%s, %s), 4326), 'ADMIN', '%s')",
+				geolocalization.getLongitude(), geolocalization.getLatitude(),
+				Timestamp.valueOf(LocalDateTime.now())
 		);
-		
-		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(URL_REST_SERVICE)
-				.queryParam("q", insert)
-				.queryParam("api_key", CARTO_API_KEY);
 
-		restTemplate.postForObject(builder.build(false).toUri(), null, String.class);
+		try {
+			restTemplate.postForObject(buildUrl(insert), null, String.class);
+		}
+		catch (HttpStatusCodeException exception){
+			System.err.println(exception.getResponseBodyAsString());
+			exception.printStackTrace();
+			throw exception;
+		}
 		
 		return geolocalization;
 	}
-	
+
+	private URI buildUrl(String query){
+		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(URL_REST_SERVICE)
+				.queryParam("q", query)
+				.queryParam("api_key", CARTO_API_KEY);
+
+		return builder.build(false).toUri();
+	}
 }
