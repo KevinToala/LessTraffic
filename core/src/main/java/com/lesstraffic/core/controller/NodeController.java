@@ -21,9 +21,4 @@ public class NodeController {
 				.status(HttpStatus.CREATED)
 				.body(geolocalizationService.insertNode(geolocalization));
 	}
-
-	@GetMapping("/hola")
-	public String hola(){
-		return "Hola Mundo";
-	}
 }
