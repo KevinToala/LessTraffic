@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
@@ -27,6 +29,7 @@ public class CartoService implements GeolocalizationService {
 	private RestTemplate restTemplate;
 
 	@Override
+	@KafkaListener(topics = "${lesstraffic.topic.enqueue.node}")
 	public Geolocalization insertNode(Geolocalization geolocalization){
 		String insert = String.format(
 				"insert into $CartoTable$(the_geom, username, insert_date)" +
