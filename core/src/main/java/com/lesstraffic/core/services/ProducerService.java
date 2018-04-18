@@ -16,6 +16,5 @@ public class ProducerService {
 
     public void enqueueNode(Geolocalization geolocalization){
         kafkaTemplate.send(TOPIC_ENQUEUE_NODE, geolocalization);
-
     }
 }
