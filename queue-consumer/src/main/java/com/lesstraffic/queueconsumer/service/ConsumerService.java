@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class ConsumerService {
 
-    @KafkaListener(topics = "${lesstraffic.topic.enqueue.node}")
-    public void enqueuNode(Object object){
+    @KafkaListener(topics = "${lesstraffic.topic.generic-enqueue}")
+    public void genericEnqueue(Object object){
         System.out.println(object);
     }
 }
