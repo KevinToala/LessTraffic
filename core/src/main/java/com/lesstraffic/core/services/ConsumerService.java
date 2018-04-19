@@ -11,7 +11,7 @@ public class ConsumerService {
     @Autowired
     private GeolocalizationService geolocalizationService;
 
-    @KafkaListener(topics = "${lesstraffic.topic.enqueue.node}")
+    @KafkaListener(topics = "${lesstraffic.topic.generic-enqueue}")
     public void enqueuNode(Geolocalization geolocalization){
         geolocalizationService.insertNode(geolocalization);
     }

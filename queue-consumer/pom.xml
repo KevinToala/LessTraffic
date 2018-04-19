@@ -4,12 +4,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.lesstraffic</groupId>
-    <artifactId>queue-producer</artifactId>
+    <artifactId>queue-consumer</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>queue-producer</name>
-    <description>Microservicio para el encolamiento de datos</description>
+    <name>queue-consumer</name>
+    <description>Microservicio consumidor de mensajes de apache kafka</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -34,12 +34,6 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
         </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-
         <dependency>
             <groupId>org.springframework.kafka</groupId>
             <artifactId>spring-kafka</artifactId>
