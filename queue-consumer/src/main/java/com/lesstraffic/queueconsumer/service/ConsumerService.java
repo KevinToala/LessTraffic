@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ConsumerService {
 
-    @KafkaListener(topics = "${lesstraffic.topic.generic-enqueue}")
+    @KafkaListener(topics = "${lesstraffic.geolocation.topic.enqueue-node}")
     public void genericEnqueue(Object object){
         System.out.println(object);
     }
