@@ -20,24 +20,27 @@ public class ConsumerConfiguration {
     @Value("${spring.kafka.bootstrap-servers}")
     private String bootstrapServers;
 
-    @Value("${lesstraffic.group.consumer.generic-enqueue}")
-    private String genericEnqueueConsumer;
+    @Value("${lesstraffic.geolocation.group.enqueue-node}")
+    private String GROUP_ENQUEUE_GEOLOCATION_NODE;
 
     @Bean
     public Map<String, Object> consumerConfigs(){
-        Map<String, Object> props = new HashMap<>();
-        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-        props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
-        props.put(ConsumerConfig.GROUP_ID_CONFIG, genericEnqueueConsumer);
+        Map<String, Object> properties = new HashMap<>();
+        properties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
+        properties.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+        properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
+        properties.put(ConsumerConfig.GROUP_ID_CONFIG, GROUP_ENQUEUE_GEOLOCATION_NODE);
 
-        return props;
+        return properties;
     }
 
     @Bean
     public ConsumerFactory<String, Object> consumerFactory(){
-        return new DefaultKafkaConsumerFactory<>(consumerConfigs(), new StringDeserializer(),
-                new JsonDeserializer<>(Object.class));
+        return new DefaultKafkaConsumerFactory<>(
+                consumerConfigs(),
+                new StringDeserializer(),
+                new JsonDeserializer<>(Object.class)
+        );
     }
 
     @Bean

@@ -1,4 +1,4 @@
-package com.lesstraffic.queueproducer;
+package com.lesstraffic.geolocationproducer;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -7,7 +7,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class QueueProducerApplicationTests {
+public class GeolocationProducerApplicationTests {
 
     @Test
     public void contextLoads() {
