@@ -21,14 +21,4 @@ public class GeolocationServiceApplication {
 	public RestTemplate restTemplate(RestTemplateBuilder builder){
 		return builder.build();
 	}
-	
-	@Bean
-	public WebMvcConfigurer corsConfigurer(){
-		return new WebMvcConfigurer(){
-			@Override
-			public void addCorsMappings(CorsRegistry registry){
-				registry.addMapping("/**");
-			}
-		};
-	}
 }
