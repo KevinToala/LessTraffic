@@ -1,4 +1,4 @@
-package com.lesstraffic.core.controller;
+package com.lesstraffic.geolocationservice.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
