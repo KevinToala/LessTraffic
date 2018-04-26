@@ -15,10 +15,10 @@ public class ConsumerService {
 	@Autowired
 	private RestTemplate restTemplate;
 	
-	@Autowired @Qualifier("eurekaClient")
+	@Autowired
 	private EurekaClient eurekaClient;
 	
-    @KafkaListener(topics = "${lesstraffic.geolocation.topic.enqueue-node}")
+    //@KafkaListener(topics = "${lesstraffic.geolocation.topic.enqueue-node}")
     public void genericEnqueue(GeolocationDTO geolocation){
 	    Application application = eurekaClient.getApplication("gateway-server");
 	    InstanceInfo instanceInfo = application.getInstances().get(0);
