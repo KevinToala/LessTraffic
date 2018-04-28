@@ -8,6 +8,6 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 public class GeolocationDTO {
-    private BigDecimal latitude;
-    private BigDecimal longitude;
+    private BigDecimal lat;
+    private BigDecimal lng;
 }
