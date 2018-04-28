@@ -24,6 +24,9 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+
+import static java.util.Objects.nonNull;
 
 @Component
 public class QueueMessageListener implements MessageListener<String, String> {
@@ -33,8 +36,7 @@ public class QueueMessageListener implements MessageListener<String, String> {
     @Autowired
     private RestTemplate restTemplate;
 
-    @Qualifier("eurekaClient")
-    @Autowired
+    @Autowired @Qualifier("eurekaClient")
     private EurekaClient eurekaClient;
 
     @Override
@@ -44,28 +46,40 @@ public class QueueMessageListener implements MessageListener<String, String> {
 
         try {
             Map<String, Object> queueJson = new ObjectMapper().readValue(record.value(), HashMap.class);
-            StrSubstitutor strSubstitutor = new StrSubstitutor(queueJson);
 
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
+
+            Map<String, Object> bagResponse = new HashMap<>(queueJson);
+            StrSubstitutor strSubstitutor = new StrSubstitutor(bagResponse);
 
             eventRepository.findByTopic(topic)
                 .ifPresent(event -> {
                     List<Action> actions = event.getActions();
                     actions.forEach(action -> {
-                        String endpoint = action.getEndpoint();
+                        String endpoint = getUrl(action.getEndpoint());
                         String finalBody = action.getTemplate();
 
                         HttpEntity<String> entity = new HttpEntity<>(strSubstitutor.replace(finalBody), headers);
+                        Map<String, Object> response = null;
 
                         switch(action.getMethod()){
+                            case GET:
+                                response = restTemplate.getForObject(endpoint, HashMap.class);
+                                break;
                             case POST:
-                               String response = restTemplate.postForObject(
-                                       getUrl(endpoint),
-                                       entity,
-                                       String.class
-                               );
-                               System.out.println(response);
+                                response = restTemplate.postForObject(endpoint, entity, HashMap.class);
+                               break;
+                            case PUT:
+                                restTemplate.put(endpoint, entity);
+                                break;
+                            case PATCH:
+                                response = restTemplate.patchForObject(endpoint, entity, HashMap.class);
+                                break;
+                        }
+
+                        if(nonNull(response)){
+                            bagResponse.putAll(response);
                         }
                     });
                 });
