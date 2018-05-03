@@ -32,6 +32,6 @@ public class Action extends BaseEntity {
     private String endpoint;
 
     @Lob
-    @Column(name = "template", nullable = false)
+    @Column(name = "template", nullable = true)
     private String template;
 }

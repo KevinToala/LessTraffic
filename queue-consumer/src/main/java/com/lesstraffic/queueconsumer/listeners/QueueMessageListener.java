@@ -6,7 +6,6 @@ import com.lesstraffic.queueconsumer.repositories.EventRepository;
 import com.netflix.appinfo.InstanceInfo;
 import com.netflix.discovery.EurekaClient;
 import com.netflix.discovery.shared.Application;
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.text.StrSubstitutor;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,17 +23,13 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import static java.util.Objects.nonNull;
 
 @Component
 public class QueueMessageListener implements MessageListener<String, String> {
-    @Autowired
-    private EventRepository eventRepository;
-
-    @Autowired
-    private RestTemplate restTemplate;
+    @Autowired private EventRepository eventRepository;
+    @Autowired private RestTemplate restTemplate;
 
     @Autowired @Qualifier("eurekaClient")
     private EurekaClient eurekaClient;
@@ -57,24 +52,25 @@ public class QueueMessageListener implements MessageListener<String, String> {
                 .ifPresent(event -> {
                     List<Action> actions = event.getActions();
                     actions.forEach(action -> {
-                        String endpoint = getUrl(action.getEndpoint());
-                        String finalBody = action.getTemplate();
+                        String urlWithEndpoint = getUrl(action.getEndpoint());
+                        String finalEndpoint = strSubstitutor.replace(urlWithEndpoint);
+                        String finalBody = strSubstitutor.replace(action.getTemplate());
 
-                        HttpEntity<String> entity = new HttpEntity<>(strSubstitutor.replace(finalBody), headers);
+                        HttpEntity<String> entity = new HttpEntity<>(finalBody, headers);
                         Map<String, Object> response = null;
 
                         switch(action.getMethod()){
                             case GET:
-                                response = restTemplate.getForObject(endpoint, HashMap.class);
+                                response = restTemplate.getForObject(finalEndpoint, HashMap.class);
                                 break;
                             case POST:
-                                response = restTemplate.postForObject(endpoint, entity, HashMap.class);
+                                response = restTemplate.postForObject(finalEndpoint, entity, HashMap.class);
                                break;
                             case PUT:
-                                restTemplate.put(endpoint, entity);
+                                restTemplate.put(finalEndpoint, entity);
                                 break;
                             case PATCH:
-                                response = restTemplate.patchForObject(endpoint, entity, HashMap.class);
+                                response = restTemplate.patchForObject(finalEndpoint, entity, HashMap.class);
                                 break;
                         }
 

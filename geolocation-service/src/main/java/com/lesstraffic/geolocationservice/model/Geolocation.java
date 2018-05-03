@@ -10,4 +10,5 @@ import java.math.BigDecimal;
 public class Geolocation {
 	private BigDecimal latitude;
 	private BigDecimal longitude;
+	private String cont;
 }
