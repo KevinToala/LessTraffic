@@ -6,7 +6,7 @@ import com.lesstraffic.queueconsumer.repositories.EventRepository;
 import com.netflix.appinfo.InstanceInfo;
 import com.netflix.discovery.EurekaClient;
 import com.netflix.discovery.shared.Application;
-import org.apache.commons.lang.text.StrSubstitutor;
+import org.apache.commons.text.StringSubstitutor;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -46,7 +46,7 @@ public class QueueMessageListener implements MessageListener<String, String> {
             headers.setContentType(MediaType.APPLICATION_JSON);
 
             Map<String, Object> bagResponse = new HashMap<>(queueJson);
-            StrSubstitutor strSubstitutor = new StrSubstitutor(bagResponse);
+            StringSubstitutor strSubstitutor = new StringSubstitutor(bagResponse);
 
             eventRepository.findByTopic(topic)
                 .ifPresent(event -> {
