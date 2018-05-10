@@ -1,6 +1,6 @@
 package com.lesstraffic.geolocationservice.config;
 
-import com.lesstraffic.geolocationservice.model.Geolocation;
+import com.lesstraffic.geolocationservice.dto.GeolocationDTO;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,17 +36,17 @@ public class ConsumerConfiguration {
     }
 
     @Bean
-    public ConsumerFactory<String, Geolocation> consumerFactory(){
+    public ConsumerFactory<String, GeolocationDTO> consumerFactory(){
         return new DefaultKafkaConsumerFactory<>(
         		consumerConfigs(),
 		        new StringDeserializer(),
-		        new JsonDeserializer<>(Geolocation.class)
+		        new JsonDeserializer<>(GeolocationDTO.class)
         );
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, Geolocation> kafkaListenerContainerFactory(){
-        ConcurrentKafkaListenerContainerFactory<String, Geolocation> factory =
+    public ConcurrentKafkaListenerContainerFactory<String, GeolocationDTO> kafkaListenerContainerFactory(){
+        ConcurrentKafkaListenerContainerFactory<String, GeolocationDTO> factory =
 		        new ConcurrentKafkaListenerContainerFactory<>();
         
         factory.setConsumerFactory(consumerFactory());

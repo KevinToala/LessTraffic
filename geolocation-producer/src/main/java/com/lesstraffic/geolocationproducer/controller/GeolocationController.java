@@ -8,13 +8,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @RestController
 public class GeolocationController {
     @Autowired
     private GeolocationService geolocationService;
 
     @PostMapping("enqueueNode")
-    public ResponseEntity<Void> enqueueNode(@RequestBody GeolocationDTO geolocation){
+    public ResponseEntity<Void> enqueueNode(@RequestBody @Valid GeolocationDTO geolocation){
         geolocationService.enqueueNode(geolocation);
 
         return ResponseEntity
