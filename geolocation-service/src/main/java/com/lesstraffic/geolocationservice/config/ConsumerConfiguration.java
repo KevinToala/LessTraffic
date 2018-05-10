@@ -20,6 +20,9 @@ import java.util.Map;
 public class ConsumerConfiguration {
     @Value("${spring.kafka.bootstrap-servers}")
     private String bootstrapServers;
+	
+	@Value("${lesstraffic.geolocation.group.insert-node}")
+	private String GEOLOCATION_GROUP_INSERT_NODE;
     
     @Bean
     public Map<String, Object> consumerConfigs(){
@@ -27,7 +30,7 @@ public class ConsumerConfiguration {
         properties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         properties.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
-	    properties.put(ConsumerConfig.GROUP_ID_CONFIG, "GEOLOCATION-SERVICE-GROUP");
+	    properties.put(ConsumerConfig.GROUP_ID_CONFIG, GEOLOCATION_GROUP_INSERT_NODE);
 
         return properties;
     }
