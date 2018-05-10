@@ -1,4 +1,4 @@
-package com.lesstraffic.geolocationservice.services.geolocalization;
+package com.lesstraffic.geolocationservice.services;
 
 import com.lesstraffic.geolocationservice.model.Geolocation;
 

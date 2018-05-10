@@ -1,7 +1,7 @@
-package com.lesstraffic.geolocationservice.services.geolocalization.carto;
+package com.lesstraffic.geolocationservice.services.carto;
 
 import com.lesstraffic.geolocationservice.model.Geolocation;
-import com.lesstraffic.geolocationservice.services.geolocalization.GeolocationService;
+import com.lesstraffic.geolocationservice.services.GeolocationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;

@@ -11,10 +11,10 @@ public class GeolocationService {
     @Autowired
     private KafkaTemplate<String, GeolocationDTO> kafkaTemplate;
 
-    @Value("${lesstraffic.geolocation.topic.enqueue-node}")
-    private String TOPIC_ENQUEUE_GEOLOCATION_NODE;
+    @Value("${lesstraffic.geolocation.topic.insert-node}")
+    private String GEOLOCATION_TOPIC_INSERT_NODE;
 
     public void enqueueNode(GeolocationDTO geolocation){
-        kafkaTemplate.send(TOPIC_ENQUEUE_GEOLOCATION_NODE, geolocation);
+        kafkaTemplate.send(GEOLOCATION_TOPIC_INSERT_NODE, geolocation);
     }
 }
