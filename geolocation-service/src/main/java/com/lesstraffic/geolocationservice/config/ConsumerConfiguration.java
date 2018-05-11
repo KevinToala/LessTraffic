@@ -32,6 +32,7 @@ public class ConsumerConfiguration {
 	    properties.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
 	    properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
 	    properties.put(ConsumerConfig.GROUP_ID_CONFIG, GEOLOCATION_GROUP_INSERT_NODE);
+	    properties.put(JsonDeserializer.TRUSTED_PACKAGES, "*");
 
         return properties;
     }
