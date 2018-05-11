@@ -1,6 +1,6 @@
 package com.lesstraffic.geolocationservice.services.carto;
 
-import com.lesstraffic.geolocationservice.dto.Geolocation;
+import com.lesstraffic.geolocationservice.model.GeolocationDTO;
 import com.lesstraffic.geolocationservice.services.GeolocationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,17 +21,17 @@ public class CartoService implements GeolocationService {
 	private RestTemplate restTemplate;
 
 	@Override
-	public Geolocation insertNode(Geolocation geolocation){
+	public GeolocationDTO insertNode(GeolocationDTO geolocationDTO){
 		String insert = String.format(
 				"insert into $CartoTable$(the_geom, username, insert_date)" +
 						" values(ST_SetSRID(ST_Point(%s, %s), 4326), 'ADMIN', '%s')",
-				geolocation.getLongitude(), geolocation.getLatitude(),
+				geolocationDTO.getLongitude(), geolocationDTO.getLatitude(),
 				Timestamp.valueOf(LocalDateTime.now())
 		);
 
 		restTemplate.postForObject(buildUrl(insert), null, String.class);
 		
-		return geolocation;
+		return geolocationDTO;
 	}
 
 	private URI buildUrl(String query){
