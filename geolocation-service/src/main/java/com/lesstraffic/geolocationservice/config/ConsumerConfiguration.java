@@ -1,6 +1,6 @@
 package com.lesstraffic.geolocationservice.config;
 
-import com.lesstraffic.geolocationservice.model.GeolocationDTO;
+import com.lesstraffic.geolocationservice.model.Geolocation;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,7 +11,6 @@ import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
-
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,23 +31,22 @@ public class ConsumerConfiguration {
 	    properties.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
 	    properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
 	    properties.put(ConsumerConfig.GROUP_ID_CONFIG, GEOLOCATION_GROUP_INSERT_NODE);
-	    properties.put(JsonDeserializer.TRUSTED_PACKAGES, "*");
-
+	    
         return properties;
     }
 
     @Bean
-    public ConsumerFactory<String, GeolocationDTO> consumerFactory(){
+    public ConsumerFactory<String, Geolocation> consumerFactory(){
 	    return new DefaultKafkaConsumerFactory<>(consumerConfigs(), new StringDeserializer(),
-			    new JsonDeserializer<>(GeolocationDTO.class));
+			    new JsonDeserializer<>(Geolocation.class));
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, GeolocationDTO> kafkaListenerContainerFactory() {
-	    ConcurrentKafkaListenerContainerFactory<String, GeolocationDTO> factory =
+    public ConcurrentKafkaListenerContainerFactory<String, Geolocation> kafkaListenerContainerFactory() {
+	    ConcurrentKafkaListenerContainerFactory<String, Geolocation> factory =
 			    new ConcurrentKafkaListenerContainerFactory<>();
 	    factory.setConsumerFactory(consumerFactory());
-	
+	    
 	    return factory;
     }
 }

@@ -1,7 +1,7 @@
 package com.lesstraffic.geolocationservice.services;
 
-import com.lesstraffic.geolocationservice.model.GeolocationDTO;
+import com.lesstraffic.geolocationservice.model.Geolocation;
 
 public interface GeolocationService {
-	GeolocationDTO insertNode(GeolocationDTO geolocationDTO);
+	Geolocation insertNode(Geolocation geolocation);
 }
