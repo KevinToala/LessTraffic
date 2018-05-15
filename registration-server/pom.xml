@@ -23,7 +23,8 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
         <spring-cloud.version>Finchley.RC1</spring-cloud.version>
-    </properties>
+		<docker.image.prefix>corsoft</docker.image.prefix>
+	</properties>
 
     <dependencies>
         <dependency>
@@ -51,12 +52,57 @@
     </dependencyManagement>
 
     <build>
-        <plugins>
+		<finalName>lesstraffic-registration-server</finalName>
+		
+		<plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
-        </plugins>
+			
+			<plugin>
+				<groupId>com.spotify</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<version>0.4.5</version>
+				<configuration>
+				
+					<!-- NOTE: These Environment Variables Need to be set for Docker Toolbox on your machine DOCKER_CERT_PATH=/Users/adrianmilne/.docker/machine/machines/default DOCKER_HOST=https://192.168.99.100:2376 -->
+				
+					<imageName>${docker.image.prefix}/${project.artifactId}</imageName>
+					<dockerDirectory>src/main/docker</dockerDirectory>
+					<resources>
+						<resource>
+							<targetPath>/</targetPath>
+							<directory>${project.build.directory}</directory>
+							<include>${project.build.finalName}.jar</include>
+						</resource>
+					</resources>
+				</configuration>
+			</plugin>
+		
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>2.6</version>
+				<executions>
+					<execution>
+						<id>make-zip</id>
+						<phase>package</phase>
+						<goals>
+							<goal>
+								single
+							</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<appendAssemblyId>false</appendAssemblyId>
+					<descriptors>
+						<descriptor>src/main/docker/assembly.xml</descriptor>
+					</descriptors>
+				</configuration>
+			</plugin>
+
+		</plugins>
     </build>
 
     <repositories>
