@@ -1,0 +1,20 @@
+version: '3'
+services:
+    registration-server:
+        build: ./registration-server/src/main/docker
+        working_dir: /registration-server/src/main/docker
+        image: lesstraffic/registration-server:latest
+        expose:
+            - 8761
+        ports:
+            - 8761:8761
+    configuration-server:
+        build: ./configuration-server/src/main/docker
+        working_dir: /configuration-server/src/main/docker
+        image: lesstraffic/configuration-server:latest
+        expose:
+            - 8888
+        ports:
+            - 8888:8888
+        depends_on:
+            - registration-server
