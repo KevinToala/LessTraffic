@@ -18,3 +18,13 @@ services:
             - 8888:8888
         depends_on:
             - registration-server
+    gateway-server:
+        build: ./gateway-server/src/main/docker
+        working_dir: /gateway-server/src/main/docker
+        image: lesstraffic/gateway-server:latest
+        expose:
+            - 8765
+        ports:
+            - 8765:8765
+        depends_on:
+            - registration-server
