@@ -28,3 +28,23 @@ services:
             - 8765:8765
         depends_on:
             - registration-server
+    geolocation-producer:
+        build: ./geolocation-producer/src/main/docker
+        working_dir: /geolocation-producer/src/main/docker
+        image: lesstraffic/geolocation-producer:latest
+        expose:
+            - 8081
+        ports:
+            - 8081:8081
+        depends_on:
+            - registration-server
+    geolocation-service:
+        build: ./geolocation-service/src/main/docker
+        working_dir: /geolocation-service/src/main/docker
+        image: lesstraffic/geolocation-service:latest
+        expose:
+            - 9091
+        ports:
+            - 9091:9091
+        depends_on:
+            - registration-server
