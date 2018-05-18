@@ -18,7 +18,7 @@ import java.util.Map;
 @EnableKafka
 @Configuration
 public class ConsumerConfiguration {
-    @Value("${spring.kafka.bootstrap-servers2}")
+    @Value("${spring.kafka.bootstrap-servers}")
     private String bootstrapServers;
 	
 	@Value("${lesstraffic.geolocation.group.insert-node}")
