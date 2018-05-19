@@ -9,8 +9,6 @@ services:
         ports:
             - 8761:8761
         hostname: registration-server
-        networks:
-            - emp-network
     configuration-server:
         build: ./configuration-server/src/main/docker
         working_dir: /configuration-server/src/main/docker
@@ -21,11 +19,7 @@ services:
             - 8888:8888
         depends_on:
             - registration-server
-        links:
-            - registration-server:registration-server
         hostname: configuration-server
-        networks:
-            - emp-network
     gateway-server:
         build: ./gateway-server/src/main/docker
         working_dir: /gateway-server/src/main/docker
@@ -38,11 +32,6 @@ services:
             - registration-server
             - configuration-server
         hostname: gateway-server
-        links:
-            - registration-server:registration-server
-            - configuration-server:configuration-server
-        networks:
-            - emp-network
     geolocation-producer:
         build: ./geolocation-producer/src/main/docker
         working_dir: /geolocation-producer/src/main/docker
@@ -55,11 +44,6 @@ services:
             - registration-server
             - configuration-server
         hostname: geolocation-producer
-        links:
-            - registration-server:registration-server
-            - configuration-server:configuration-server
-        networks:
-            - emp-network
 #    geolocation-service:
 #        build: ./geolocation-service/src/main/docker
 #        working_dir: /geolocation-service/src/main/docker
@@ -71,7 +55,3 @@ services:
 #        depends_on:
 #            - registration-server
 #            - configuration-server
-
-networks:
-    emp-network:
-        driver: bridge
