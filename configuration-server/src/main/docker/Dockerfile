@@ -2,11 +2,6 @@ FROM java:8
 VOLUME /tmp
 EXPOSE 8888
 
-RUN apt-get update -q \
-  && DEBIAN_FRONTEND=noninteractive apt-get install -qy netcat \
-  && apt-get clean \
-  && rm -rf /var/lib/apt
-
 ADD wait-for-it.sh /wait-for-it.sh
 RUN chmod +x /wait-for-it.sh
 
