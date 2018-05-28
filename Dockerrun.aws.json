@@ -1,0 +1,82 @@
+
+{
+  "AWSEBDockerrunVersion": 2,
+  "volumes": [
+    {
+      "name": "nginx-proxy-conf",
+      "host": {
+        "sourcePath": "/var/app/current/proxy/conf.d"
+      }
+    }
+  ],
+  "containerDefinitions": [
+    {
+      "name": "registration-server",
+      "image": "675238153739.dkr.ecr.us-east-1.amazonaws.com/lesstraffic/registration-server:latest",
+      "essential": true,
+      "memory": 700,
+      "portMappings": [
+        {
+          "hostPort": 8761,
+          "containerPort": 8761
+        }
+      ]
+    },
+	{
+      "name": "configuration-server",
+      "image": "675238153739.dkr.ecr.us-east-1.amazonaws.com/lesstraffic/configuration-server:latest",
+      "essential": true,
+      "memory": 700,
+      "portMappings": [
+        {
+          "hostPort": 8888,
+          "containerPort": 8888
+        }
+      ],
+      "links": [
+        "registration-server"
+      ]
+    },
+	{
+      "name": "gateway-server",
+      "image": "675238153739.dkr.ecr.us-east-1.amazonaws.com/lesstraffic/gateway-server:latest",
+      "essential": true,
+      "memory": 700,
+      "portMappings": [
+        {
+          "hostPort": 8765,
+          "containerPort": 8765
+        }
+      ],
+      "links": [
+        "configuration-server"
+      ]
+    },
+    {
+      "name": "nginx-proxy",
+      "image": "nginx",
+      "essential": true,
+      "memory": 128,
+      "portMappings": [
+        {
+          "hostPort": 80,
+          "containerPort": 80
+        }
+      ],
+      "links": [
+        "registration-server"
+      ],
+      "mountPoints": [
+        {
+          "sourceVolume": "nginx-proxy-conf",
+          "containerPath": "/etc/nginx/conf.d",
+          "readOnly": true
+        },
+        {
+          "sourceVolume": "awseb-logs-nginx-proxy",
+          "containerPath": "/var/log/nginx"
+        }
+      ]
+    }
+  ]
+}

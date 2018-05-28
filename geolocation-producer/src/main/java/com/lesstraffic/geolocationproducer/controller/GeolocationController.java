@@ -4,9 +4,7 @@ import com.lesstraffic.geolocationproducer.dto.GeolocationDTO;
 import com.lesstraffic.geolocationproducer.service.GeolocationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -23,4 +21,14 @@ public class GeolocationController {
                 .noContent()
                 .build();
     }
+    
+    @GetMapping("hello")
+	public ResponseEntity<String> sayHello(){
+    	return ResponseEntity.ok("hello");
+    }
+	
+	@GetMapping("hello/{name}")
+	public ResponseEntity<String> sayHelloWithName(@PathVariable String name){
+		return ResponseEntity.ok("hello " + name);
+	}
 }
