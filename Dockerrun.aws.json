@@ -14,7 +14,7 @@
       "name": "registration-server",
       "image": "675238153739.dkr.ecr.us-east-1.amazonaws.com/lesstraffic/registration-server:latest",
       "essential": true,
-      "memory": 700,
+      "memory": 1900,
       "portMappings": [
         {
           "hostPort": 8761,
@@ -26,7 +26,7 @@
       "name": "configuration-server",
       "image": "675238153739.dkr.ecr.us-east-1.amazonaws.com/lesstraffic/configuration-server:latest",
       "essential": true,
-      "memory": 700,
+      "memory": 1900,
       "portMappings": [
         {
           "hostPort": 8888,
@@ -41,7 +41,7 @@
       "name": "gateway-server",
       "image": "675238153739.dkr.ecr.us-east-1.amazonaws.com/lesstraffic/gateway-server:latest",
       "essential": true,
-      "memory": 700,
+      "memory": 1900,
       "portMappings": [
         {
           "hostPort": 8765,
@@ -49,6 +49,39 @@
         }
       ],
       "links": [
+        "registration-server",
+		"configuration-server"
+      ]
+    },
+	{
+      "name": "geolocation-producer",
+      "image": "675238153739.dkr.ecr.us-east-1.amazonaws.com/lesstraffic/geolocation-producer:latest",
+      "essential": true,
+      "memory": 1900,
+      "portMappings": [
+        {
+          "hostPort": 8089,
+          "containerPort": 8089
+        }
+      ],
+      "links": [
+        "registration-server",
+		"configuration-server"
+      ]
+    },
+    {
+      "name": "geolocation-service",
+      "image": "675238153739.dkr.ecr.us-east-1.amazonaws.com/lesstraffic/geolocation-service:latest",
+      "essential": true,
+      "memory": 1900,
+      "portMappings": [
+        {
+          "hostPort": 9099,
+          "containerPort": 9099
+        }
+      ],
+      "links": [
+        "registration-server",
         "configuration-server"
       ]
     },
@@ -56,7 +89,7 @@
       "name": "nginx-proxy",
       "image": "nginx",
       "essential": true,
-      "memory": 128,
+      "memory": 250,
       "portMappings": [
         {
           "hostPort": 80,
@@ -64,7 +97,8 @@
         }
       ],
       "links": [
-        "registration-server"
+        "registration-server",
+		"gateway-server"
       ],
       "mountPoints": [
         {
