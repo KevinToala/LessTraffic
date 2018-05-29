@@ -15,6 +15,8 @@ public class GeolocationController {
 
     @PostMapping("enqueueNode")
     public ResponseEntity<Void> enqueueNode(@RequestBody @Valid GeolocationDTO geolocation){
+    	System.out.println("llamo para insertar");
+    	
         geolocationService.enqueueNode(geolocation);
 
         return ResponseEntity
